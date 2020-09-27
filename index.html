@@ -5,27 +5,7 @@
     <meta charset="utf-8">
     <title>hello vue.js</title>
     <style>
-        #list {
-            width: 400px;
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        
-        #list td,
-        #list th {
-            border: 1px solid black;
-            text-align: center;
-        }
-        
-        #list>thead>tr {
-            color: yellow;
-            background-color: purple;
-        }
-        
-        .divider {
-            height: 2px;
-            background-color: gray;
-        }
+
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
@@ -33,27 +13,7 @@
 
 <body>
     <div id="example">
-        <p>
-            이름 : <input type="text" placeholder="이름" @input="nameChanged" />
-        </p>
-        <table id="list">
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>이름</th>
-                    <th>전화번호</th>
-                    <th>지역</th>
-                </tr>
-            </thead>
-            <tbody id="contacts">
-                <tr v-for="c in filtered">
-                    <td>{{c.no}}</td>
-                    <td>{{c.name}}</td>
-                    <td>{{c.tel}}</td>
-                    <td>{{c.address}}</td>
-                </tr>
-            </tbody>
-        </table>
+        x
     </div>
     <script type="text/javascript">
         var regions = {
@@ -124,7 +84,7 @@
 
 
         }
-        var list = new Vue({
+        var vm = new Vue({
             el: '#example',
             data: model,
             computed: {
