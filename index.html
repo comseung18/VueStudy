@@ -4,22 +4,149 @@
 <head>
     <meta charset="utf-8">
     <title>hello vue.js</title>
+    <style>
+        #list {
+            width: 400px;
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        #list td,
+        #list th {
+            border: 1px solid black;
+            text-align: center;
+        }
+        
+        #list>thead>tr {
+            color: yellow;
+            background-color: purple;
+        }
+        
+        .divider {
+            height: 2px;
+            background-color: gray;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 
 </head>
 
 <body>
-    <div id="account">
-        예금액 : <input type="text" v-model="amount" />
-        <img v-if="amount < 0 " src="images/error.png" title="마이너스는 허용하지 않습니다" style="width:15px;height:15px; vertical-align: middle;" />
+    <div id="example">
+        <p>
+            이름 : <input type="text" placeholder="이름" @input="nameChanged" />
+        </p>
+        <table id="list">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th>지역</th>
+                </tr>
+            </thead>
+            <tbody id="contacts">
+                <tr v-for="c in filtered">
+                    <td>{{c.no}}</td>
+                    <td>{{c.name}}</td>
+                    <td>{{c.tel}}</td>
+                    <td>{{c.address}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <script type="text/javascript">
-        var simple1 = new Vue({
-            el: '#account',
-            data: {
-                amount: 0
-            }
-        })
+        var regions = {
+            "A": "Asia",
+            "B": "America",
+            "C": "Europe",
+            "D": "Africa",
+            "E": "Oceania"
+        };
+        var model = {
+            "pageno": 1,
+            "pagesize": 10,
+            "totalcount": 100,
+            "contacts": [{
+                "no": 100,
+                "name": "설현",
+                "tel": "010-3456-8299",
+                "address": "서울"
+            }, {
+                "no": 99,
+                "name": "혜리",
+                "tel": "010-3456-8298",
+                "address": "서울"
+            }, {
+                "no": 98,
+                "name": "하니",
+                "tel": "010-3456-8297",
+                "address": "경기"
+            }, {
+                "no": 97,
+                "name": "성소",
+                "tel": "010-3456-8296",
+                "address": "제주"
+            }, {
+                "no": 96,
+                "name": "지아",
+                "tel": "010-3456-8295",
+                "address": "서울"
+            }, {
+                "no": 95,
+                "name": "정연",
+                "tel": "010-3456-8294",
+                "address": "강원"
+            }, {
+                "no": 94,
+                "name": "쯔위",
+                "tel": "010-3456-8293",
+                "address": "경기"
+            }, {
+                "no": 93,
+                "name": "사나",
+                "tel": "010-3456-8292",
+                "address": "서울"
+            }, {
+                "no": 92,
+                "name": "모모",
+                "tel": "010-3456-8291",
+                "address": "충남"
+            }, {
+                "no": 91,
+                "name": "소진",
+                "tel": "010-3456-8290",
+                "address": "서울"
+            }, ],
+            message: "Hello World",
+            num: 0,
+            celebrityName: "",
+
+
+        }
+        var list = new Vue({
+            el: '#example',
+            data: model,
+            computed: {
+                sum: function() {
+                    var n = Number(this.num);
+                    return n * (n + 1) / 2;
+                },
+                filtered: function() {
+                    var cname = this.celebrityName.trim();
+                    return this.contacts.filter(function(item, index) {
+                        if (item.name.indexOf(cname) > -1) {
+                            return true;
+                        }
+                    })
+                }
+            },
+            methods: {
+                nameChanged: function(e) {
+                    this.celebrityName = e.target.value;
+                }
+            },
+        });
     </script>
 </body>
 
