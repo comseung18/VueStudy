@@ -13,7 +13,7 @@
 
 <body>
     <div id="example">
-        x
+        x : <input text='text' v-model="x"><br> y : <input text='text' v-model="y"><br> 덧셈 결과 : {{sum}}
     </div>
     <script type="text/javascript">
         var regions = {
@@ -86,26 +86,22 @@
         }
         var vm = new Vue({
             el: '#example',
-            data: model,
+            data: {
+                x: 0,
+                y: 0,
+
+            },
             computed: {
                 sum: function() {
-                    var n = Number(this.num);
-                    return n * (n + 1) / 2;
-                },
-                filtered: function() {
-                    var cname = this.celebrityName.trim();
-                    return this.contacts.filter(function(item, index) {
-                        if (item.name.indexOf(cname) > -1) {
-                            return true;
-                        }
-                    })
+                    var result = Number(this.x) + Number(this.y);
+                    if (isNaN(result)) result = 0;
+                    return result;
                 }
             },
             methods: {
-                nameChanged: function(e) {
-                    this.celebrityName = e.target.value;
-                }
+
             },
+
         });
     </script>
 </body>
