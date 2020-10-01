@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>0624</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+</head>
+<!-- 이벤트 버스 객체 -->
+<script>
+    var eventBus = new Vue();
+</script>
+
+<!-- 첫 번째 자식 컴포넌트 자식 -->
+<template id="child1Template">
+    <div>
+        <button @click="clickEvent">child1 button!!</button>
+        <div>{{currentTime}}</div>
+    </div>
+</template>
+<script>
+    Vue.component('child1-component', {
+        template: '#child1Template',
+        data: function() {
+            return {
+                currentTime: ''
+            };
+        },
+        methods: {
+            clickEvent: function() {
+                var d = new Date();
+                var t = d.toLocaleTimeString() + " " + d.getMilliseconds() + "ms";
+                eventBus.$emit('click1', t);
+                this.currentTime = t;
+            }
+        }
+    })
+</script>
+<!-- 첫 번째 자식 컴포넌트 끝 -->
+
+<!-- 두 번째 자식 컴포넌트 시작 -->
+<template id="child2Template">
+    <ul>
+        <li v-for="t in timelist">{{t}}</li>
+    </ul>
+</template>
+<script>
+    Vue.component('child2-component', {
+        template: '#child2Template',
+        data: function() {
+            return {
+                timelist: []
+            }
+        },
+        created() {
+            eventBus.$on('click1', this.child1Click);
+        },
+        methods: {
+            child1Click: function(time) {
+                this.timelist.push(time);
+            }
+        }
+    })
+</script>
+<!-- 두 번째 자식 컴포넌트 끝 -->
+
+<body>
+    <div id="example">
+        <child1-component></child1-component>
+        <hr>
+        <child2-component></child2-component>
+    </div>
+    <script>
+        Vue.config.devtools = true;
+        var vm = new Vue({
+            el: '#example',
+            data: {
+
+            },
+            methods: {
+
+            },
+        })
+    </script>
+</body>
+
+</html>
