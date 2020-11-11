@@ -32,53 +32,60 @@
                 </tbody>
             </table>
         </div>
-        <div id="page-table">
-        <button class="btn pagebutton" v-for="i in 10" :key="i" @click="paging(i)"
-        v-bind:class="{nowpage : isnow(i)}">{{i}}</button>
-        </div>
+        <paginate ref="pagebuttons"
+          :page-count="totalpage"
+          :page-range="7"
+          :margin-pages="3"
+          :click-handler="pageChanged"
+          :prev-text="'이전'"
+          :next-text="'다음'"
+          :container-class="'pagination'"
+          :page-class="'page-item'">
+        </paginate>
     </div>
 </template>
 
 <script>
-import eventBus from '../EventBus';
+import Constant from '../Constant';
+import {mapState} from 'vuex';
+import Paginate from 'vuejs-paginate';
 
 export default {
     name : 'contactList',
-    components : {},
-    props : ['contactlist'],
+    components : {Paginate},
     computed : {
         totalpage : function(){
             return Math.floor((this.contactlist.totalcount-1)/this.contactlist.pagesize)+1;
 
         },
+        ...mapState(['contactlist'])
         
     },
     watch : {
-
+      ['contactlist.pageno'] : function(){
+        this.$refs.pagebuttons.selected = this.contactlist.pageno -1;
+      }
+    },
+    mounted() {
+      this.$store.dispatch(Constant.FETCH_CONTACTS,{pageno:1});
     },
     methods: {
-        isnow : function(i){
-            return this.contactlist.pageno === i; 
-        },
         pageChanged : function(page){
-            eventBus.emit("pageChanged", page);
+          this.$store.dispatch(Constant.FETCH_CONTACTS, {pageno: page});
         },
         addContact : function(){
-            eventBus.emit("addContactForm");
+          this.$store.dispatch(Constant.ADD_CONTACT_FORM);
         },
         editContact : function(no){
-            eventBus.emit("editContactForm", no);
+          this.$store.dispatch(Constant.EDIT_CONTACT_FORM,{no});
         },
         deleteContact : function(no){
             if(confirm("정말로 삭제하시겠습니까?") == true){
-                eventBus.emit('deleteContact', no);
+              this.$store.dispatch(Constant.DELETE_CONTACT,{no});
             }
         },
         editPhoto : function(no){
-            eventBus.emit('editPhoto', no);
-        },
-        paging : function(page){
-            eventBus.emit('pageChanged', page);
+          this.$store.dispatch(Constant.EDIT_PHOTO_FORM,{no});
         }
     },
 }
