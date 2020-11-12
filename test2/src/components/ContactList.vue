@@ -42,7 +42,13 @@
           :container-class="'pagination'"
           :page-class="'page-item'">
         </paginate>
+        
+        <transition
+            @before-enter="beforeEnter"
+            @enter="enter"
+            @leave="leave">
         <router-view></router-view>
+        </transition>
     </div>
 </template>
 
@@ -50,6 +56,7 @@
 import Constant from '../Constant';
 import {mapState} from 'vuex';
 import Paginate from 'vuejs-paginate';
+import Velocity from 'velocity-animate';
 
 export default {
     name : 'contactList',
@@ -94,6 +101,20 @@ export default {
         },
         editPhoto : function(no){
           this.$router.push({name:'updatephoto', params:{no}});
+        },
+        beforeEnter(el){
+            el.style.opacity = 0
+        },
+        enter(el,done){
+            Velocity(el, {opacity: 0, scale:0.2}, {duration: 200})
+            Velocity(el, {opacity: 0.7, scale: 1.2}, {duration: 200})
+            Velocity(el, {opacity: 1, scale: 1}, {complete: done})
+        },
+        leave(el, done){
+            Velocity(el, {translateX: '0px', opacity: 1}, {duration: 100})
+            Velocity(el, {translateX: '20px', opacity: 1}, {duration: 100, loop:2})
+            Velocity(el, {translateX: '0px', opacity: 1}, {duration: 200})
+            Velocity(el, {translateX: '100px', opacity: 0}, {complete: done})
         }
     },
 }
