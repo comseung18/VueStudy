@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>1305</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+      .box{margin:10px;}
+      .elastic-enter-active{
+        animation: elastic-in 0.5s;
+      }
+      .elastic-leave-active{
+        animation: elastic-in 0.5s reverse;
+      }
+      @keyframes elastic-in{
+        0% { transform : scale(0); opacity: 0;}
+        70% { transform : scale(1.2); opacity: 0.5;}
+        100% { transform : scale(1); opacity: 1;}
+      }
+    </style>
+</head>
+
+<body>
+    <div id="example">
+      <div class="box">
+        <button @click="changeVisible" :disabled="!buttonEnabled">보여주기 토글</button>
+      </div>
+      <div class="box">
+        <transition name="elastic"
+        @before-enter="elasticBeforeEnter"
+        @after-enter="elasticAfterEnter"
+        @before-leave="elasticBeforeLeave"
+        @after-leave="elasticAfterLeave">
+          <img src="../images/foot.jpg" v-if="visible">
+        </transition>
+      </div>
+    </div>
+    <script>
+        Vue.config.devtools = true;
+        var vm = new Vue({
+            el: '#example',
+            data: {
+              visible : true,
+              buttonEnabled : true,
+            },
+            methods: {
+              changeVisible(){
+                this.visible = !this.visible;
+              },
+              elasticBeforeEnter(){
+                console.log("* BeforeEnter!");
+                this.buttonEnabled = false;
+              },
+              elasticAfterEnter(){
+                console.log("* AfterEnter!");
+                this.buttonEnabled = true;
+              },
+              elasticBeforeLeave(){
+                console.log("* BeforeLeave!");
+                this.buttonEnabled = false;
+              },
+              elasticAfterLeave(){
+                console.log("* AfterLeave!");
+                this.buttonEnabled = true;
+              }
+            },
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>1303</title>
+    <script src="https://unpkg.com/vue@2.5.16/dist/vue.js"></script>
+    <style>
+      .box{margin:10px;}
+      .fade-enter-active, .fade-leave-active{
+        transition: opacity .5s;
+      }
+      .fade-enter, .fade-leave-to{
+        opacity: 0;
+      }
+    </style>
+</head>
+
+<body>
+    <div id="example">
+      <div class="box">
+        <button @click="changeVisible">보여주기 토글</button>
+      </div>
+      <div class="box">
+        <transition name="fade">
+          <img src="../images/foot.jpg" v-if="visible">
+        </transition>
+      </div>
+    </div>
+    <script>
+        Vue.config.devtools = true;
+        var vm = new Vue({
+            el: '#example',
+            data: {
+              visible : true
+            },
+            methods: {
+              changeVisible(){
+                this.visible = !this.visible;
+              }
+            },
+        })
+    </script>
+</body>
+
+</html>

@@ -41,9 +41,11 @@ export default {
     name : 'contactForm',
     data(){
       return{
-        l_contact : {}
+        l_contact : {},
+        mode : "add"
       }
     },
+    props : ['no'],
     created(){
       this.l_contact = {...this.contact};
     },
@@ -56,21 +58,31 @@ export default {
         if(this.mode !== 'update') return '새로운 연락처 추가';
         else return '연락처 변경';
       },
-      ...mapState(['mode','contact']) 
+      ...mapState(['contact', 'contactlist']) 
     },
     mounted() {
       this.$refs.name.focus();
+      let cr = this.$router.currentRoute;
+      if(cr.fullPath.indexOf('/add') > -1){
+        this.mode = "add";
+        this.$store.dispatch(Constant.INITIALIZE_CONTACT_ONE);
+      }else if(cr.fullPath.indexOf('/update') > -1){
+        this.mode = "update";
+        this.$store.dispatch(Constant.FETCH_CONTACT_ONE,{no : this.no});
+      }
     },
     methods : {
         submitEvent : function(){
             if(this.mode == "update"){
                 this.$store.dispatch(Constant.UPDATE_CONTACT,{contact : this.l_contact});
+                this.$router.push({name:'contacts', query:{page:this.contactlist.pageno}})
             }else{
                 this.$store.dispatch(Constant.ADD_CONTACT,{contact : this.l_contact});
+                this.$router.push({name:'contacts', query: {page:1}});
             }
         },
         cancleEvent : function(){
-          this.$store.dispatch(Constant.CANCEL_FORM);
+          this.$router.push({name:'contacts', query: { page: this.contactlist.pageno}});
         }
     }
 }

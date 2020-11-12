@@ -2,8 +2,8 @@
   <!-- About.vue 도 Home.vue와 동일하게 작성합니다. -->
   <div id="example">
     <div class="panel panel-default">
-      <div class="panel-heading">Home</div>
-      <div class="panel-body">Home 화면입니다</div>
+      <div class="panel-heading">About</div>
+      <div class="panel-body">About 화면입니다</div>
     </div>
   </div>
 </template>
